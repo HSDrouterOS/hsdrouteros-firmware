@@ -44,9 +44,10 @@ jobs:
       - name: Configure target
         working-directory: source
         run: |
-          cat >> .config <<'EOF'
+          cat > .config <<'EOF'
           CONFIG_TARGET_mediatek=y
           CONFIG_TARGET_mediatek_filogic=y
+          # CONFIG_TARGET_mediatek_filogic_DEVICE_openwrt_one is not set
           CONFIG_TARGET_mediatek_filogic_DEVICE_jdcloud_re-cs-02=y
           CONFIG_PACKAGE_luci=y
           CONFIG_LUCI_LANG_zh_Hans=y
