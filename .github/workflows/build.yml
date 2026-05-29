@@ -45,10 +45,9 @@ jobs:
         working-directory: source
         run: |
           cat > .config <<'EOF'
-          CONFIG_TARGET_mediatek=y
-          CONFIG_TARGET_mediatek_filogic=y
-          # CONFIG_TARGET_mediatek_filogic_DEVICE_openwrt_one is not set
-          CONFIG_TARGET_mediatek_filogic_DEVICE_jdcloud_re-cs-02=y
+          CONFIG_TARGET_qualcommax=y
+          CONFIG_TARGET_qualcommax_ipq60xx=y
+          CONFIG_TARGET_qualcommax_ipq60xx_DEVICE_jdcloud_re-cs-02=y
           CONFIG_PACKAGE_luci=y
           CONFIG_LUCI_LANG_zh_Hans=y
           EOF
