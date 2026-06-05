@@ -1,4 +1,4 @@
-name: Build HSDrouterOS Firmware
+name: Build HSD SD-WAN Firmware
 
 on:
   workflow_dispatch:
@@ -6,6 +6,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
+    timeout-minutes: 300
 
     steps:
       - name: Checkout
@@ -19,9 +20,9 @@ jobs:
             gettext git libncurses-dev libssl-dev python3-distutils rsync unzip zlib1g-dev \
             file wget ripgrep
 
-      - name: Clone ImmortalWrt source
+      - name: Clone OpenWrt source (24.10.5)
         run: |
-          git clone --depth=1 https://github.com/immortalwrt/immortalwrt.git source
+          git clone --depth=1 --branch v24.10.5 https://github.com/openwrt/openwrt.git source
 
       - name: Prepare feeds
         working-directory: source
@@ -38,8 +39,7 @@ jobs:
 
       - name: Apply customization
         working-directory: source
-        run: |
-          ./customize.sh
+        run: ./customize.sh
 
       - name: Configure target
         working-directory: source
@@ -50,6 +50,7 @@ jobs:
           CONFIG_TARGET_qualcommax_ipq60xx_DEVICE_jdcloud_re-cs-02=y
           CONFIG_PACKAGE_luci=y
           CONFIG_LUCI_LANG_zh_Hans=y
+          CONFIG_PACKAGE_luci-theme-bootstrap=y
           EOF
           make defconfig
 
@@ -59,11 +60,11 @@ jobs:
 
       - name: Build firmware
         working-directory: source
-        run: make -j$(nproc) V=s
+        run: make -j2 V=s
 
       - name: Upload firmware artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: HSDrouterOS-firmware
+          name: HSD-SDWAN-firmware
           path: |
             source/bin/targets/**/*
